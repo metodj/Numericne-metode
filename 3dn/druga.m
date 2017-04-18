@@ -1,19 +1,36 @@
-f = @(x) (x+1)/(x^+1);
+format long
+
+f = @(x) (x+1)/(x^2+1);
 E = [-3 -1 0 1 3];
 
-%remesov algoritem, dobim p
+A = zeros(5,5);
+for i = 1:5
+  for j = 1:4
+    A(i,j)=E(i)^(j-1);
+  end
+  A(i,5)=(-1)^i;
+end
+A;
 
-%r = @(x) f(x) - p(x)
+y = zeros(5,1);
+for i=1:5
+  y(i)=f(E(i));
+end
+y;
 
-%plot(f, [-3,3])
-%plot(p, [-3,3])
-%plot(r, [-3,3])
 
-%vrednosti v konèni ali zaèetni množici E?
-%R = zeros(5, 1);
-%for i=1:5
-%  R(i) = r(E(i))
-%end
+koef = linsolve(A,y)
 
-%fminbnd vrne minimum funkcije, je za max uredu ce vzamem fminbnd od -r(x)?
-%a = fminbnd(-r, -3, 3)
+p = @(x) koef(1) + koef(2)*x + koef(3)*x^2 + koef(4)*x^3;
+r = @(x) f(x) - p(x);
+
+res = zeros(5,1);
+for i=1:5
+  res(i) = r(E(i));
+end
+res
+
+r1 = @(x) -abs(r(x));
+
+a = fminbnd(r1, 0, 3)
+b = fminbnd(r1, -3, 0)

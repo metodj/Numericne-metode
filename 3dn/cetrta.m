@@ -1,5 +1,6 @@
 format long
 
+f = @(x) sin(x);
 x = [0, pi/12, pi/6, pi/3, pi/2]';
 y = zeros(5, 1);
 i=1;
@@ -33,6 +34,15 @@ for i=0:10
   A(i+1,2) = i * (pi/20);
   A(i+1,3) = p(q(i*pi/20));
   A(i+1,4) = q(p(i*pi/20));
+  A(i+1,5) = p(q(f(i*pi/20)));
+  A(i+1,6) = f(i*pi/20);
 end
-  
+
+%cela matrika
 A
+
+%q(p(t_i))-t_i
+A(:,4)-A(:,2)
+
+%p(q(f(t_i))-f(t_i)
+A(:,5)-A(:,6)
