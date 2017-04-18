@@ -1,3 +1,5 @@
+format long
+
 x = [0, pi/12, pi/6, pi/3, pi/2]';
 y = zeros(5, 1);
 i=1;

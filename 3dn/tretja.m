@@ -1,6 +1,18 @@
 format long
 
-f = @(x) exp(x*(x+1));
+f = @(x) exp(x.*(x+1));
+
+% f1 = 1;
+% f2 = @(x) sin(x);
+% f3 = @(x) cos(x);
+% f4 = @(x) sin(x).*cos(x);
+
+% a11 = quad(@(x)1,-1,1,1e-12);
+% a12 = quad(@(x)sin(x),-1,1,1e-12);
+% a13 = quad(@(x)cos(x),-1,1,1e-12);
+% a14 = quad(@(x)sin(x).*cos(x),-1,1,1e-12);
+% 
+% A = [a11 a12 a13 a14];
 
 A = [quad(@(x)1,-1,1,1e-12) quad(@(x)sin(x),-1,1,1e-12) quad(@(x)cos(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x),-1,1,1e-12);
      quad(@(x)sin(x),-1,1,1e-12) quad(@(x)sin(x).*sin(x),-1,1,1e-12) quad(@(x)cos(x).*sin(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x).*sin(x),-1,1,1e-12);
@@ -19,6 +31,6 @@ r = @(x) f(x) - p(x);
 quad(@(x)r(x).*r(x),-1,1,1e-12)
 
 
-%plot(f, [-1,1])
-%plot(p, [-1,1])
+plot(f, [-1,1])
+plot(p, [-1,1])
      
