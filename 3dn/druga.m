@@ -24,6 +24,14 @@ koef = linsolve(A,y)
 p = @(x) koef(1) + koef(2)*x + koef(3)*x^2 + koef(4)*x^3;
 r = @(x) f(x) - p(x);
 
+%graf residuala
+fplot(r, [-3 3])
+hold on
+fplot(f, [-3 3])
+hold on
+fplot(p, [-3 3])
+hold off
+
 res = zeros(5,1);
 for i=1:5
   res(i) = r(E(i));
@@ -31,6 +39,7 @@ end
 res
 
 r1 = @(x) -abs(r(x));
+
 
 a = fminbnd(r1, 0, 3)
 b = fminbnd(r1, -3, 0)

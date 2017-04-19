@@ -1,31 +1,36 @@
 format long
 
-f = @(x) exp(x*(x+1));
+f = @(x) exp(x.*(x+1));
 
-A = [quad(@(x)1,-1,1,1e-12) quad(@(x)sin(x),-1,1,1e-12) quad(@(x)cos(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x),-1,1,1e-12);
-     quad(@(x)sin(x),-1,1,1e-12) quad(@(x)sin(x).*sin(x),-1,1,1e-12) quad(@(x)cos(x).*sin(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x).*sin(x),-1,1,1e-12);
-     quad(@(x)cos(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x),-1,1,1e-12) quad(@(x)cos(x).*cos(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x).*cos(x),-1,1,1e-12);
-     quad(@(x)sin(x).*cos(x),-1,1,1e-12) quad(@(x)sin(x).*sin(x).*cos(x),-1,1,1e-12) quad(@(x)cos(x).*sin(x).*cos(x),-1,1,1e-12) quad(@(x)sin(x).*cos(x).*sin(x).*cos(x),-1,1,1e-12)];
+g1 = @(x) 1*ones(size(x));
+g2 = @(x) sin(x);
+g3 = @(x) cos(x);
+g4 = @(x) sin(x).*cos(x);
 
+A = [quad(@(x)g1(x).*g1(x),-1,1,1e-12) quad(@(x)g2(x).*g1(x),-1,1,1e-12) quad(@(x)g3(x).*g1(x),-1,1,1e-12) quad(@(x)g4(x).*g1(x),-1,1,1e-12);
+     quad(@(x)g1(x).*g2(x),-1,1,1e-12) quad(@(x)g2(x).*g2(x),-1,1,1e-12) quad(@(x)g3(x).*g2(x),-1,1,1e-12) quad(@(x)g4(x).*g2(x),-1,1,1e-12);
+     quad(@(x)g1(x).*g3(x),-1,1,1e-12) quad(@(x)g2(x).*g3(x),-1,1,1e-12) quad(@(x)g3(x).*g3(x),-1,1,1e-12) quad(@(x)g4(x).*g3(x),-1,1,1e-12);
+     quad(@(x)g1(x).*g4(x),-1,1,1e-12) quad(@(x)g2(x).*g4(x),-1,1,1e-12) quad(@(x)g3(x).*g4(x),-1,1,1e-12) quad(@(x)g4(x).*g4(x),-1,1,1e-12)];
+
+%grammova matrika
 A
 
-b = [quad(@(x)f(x),-1,1,1e-12) quad(@(x)f(x).*sin(x),-1,1,1e-12) quad(@(x)f(x).*cos(x),-1,1,1e-12) quad(@(x)f(x).*sin(x).*cos(x),-1,1,1e-12)]';
+b = [quad(@(x)f(x).*g1(x),-1,1,1e-12), quad(@(x)f(x).*g2(x),-1,1,1e-12), quad(@(x)f(x).*g3(x),-1,1,1e-12), quad(@(x)f(x).*g4(x),-1,1,1e-12)]';
 
 b
 
 m = linsolve(A, b);
 
+%koeficienti polinoma
 m
 
-p = @(x) m(1) + m(2)*sin(x) + m(3)*cos(x) + m(4)*sin(x)*cos(x);
+p = @(x) m(1).*g1(x) + m(2).*g2(x) + m(3).*g3(x) + m(4).*g4(x);
 
 r = @(x) f(x) - p(x);
 
-%ali je to pravi izraèun druge norme residuala?
-%quad(@(x)r(x).*r(x),-1,1,1e-12)
+norma = sqrt(quad(@(x)r(x).*r(x),-1,1,1e-12))
 
-res = norm(r, 2)
 
-%plot(f, [-1,1])
-%plot(p, [-1,1])
+fplot(f, [-1,1])
+fplot(p, [-1,1])
      

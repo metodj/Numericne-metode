@@ -18,7 +18,8 @@ end
 
 a
 
-%plot(i, a(i))
+% graf napake v odvisnosti od stopnje polinoma
+plot(1:40, a)
   
 %vrne najmanjso stopnjo, pri kateri je napaka manjsa od 0.1
 j = 1;
